@@ -1,0 +1,71 @@
+h1{
+    text-align: center;
+    font-family: cursive;
+}
+body{
+    background-image: url(background.png);
+}
+#login{
+    width: 300px;
+    height: 150px;
+    background-color:darksalmon;
+    border-radius: 15px;
+    border: 5px black solid;
+    margin-left: 35%;
+    margin-top: 15%;
+}
+#login p{
+    font-size: 20px;
+    text-align: center;
+    font-family: cursive;
+}
+#login input{
+    margin-left: 20px;
+}
+.input-text{
+    width: 150px;
+    height: 30px;
+    border: 3px solid black;
+    border-radius: 10px;
+    cursor: text;
+}
+.btn{
+    height: 40px;
+    width: 50px;
+    border: 3px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.chat-frame{
+    overflow: auto;
+    margin-left: 10%;
+    width: 60%;
+    height: 80%;
+    background-color: blanchedalmond;
+    padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 15px;
+    border-radius: 15px;
+    border: black 3px solid;
+}
+#messages ul{
+    word-wrap:break-word;
+    font-family: cursive;
+    background-color: white;
+    border: 1px black solid;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+}
+#messages div{
+    position: absolute;
+    background-color:white;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-family: monospace;
+}

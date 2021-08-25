@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Chat Room</h1>
+
+    <div id="login">
+        <p>Your name</p>
+        <input class="input-text" type="text" id="user-name">
+        <button class="btn" onclick="hideLoginFrame()">Ok</button>
+    </div>
+    <div class="chat-frame" style="display: none;">
+
+        <div id="messages"></div>
+
+        <form id="chat-form">
+            <input class="input-text" type="text" id="chat-txt">
+            <button class="btn" id="send">Send</button>
+        </form>
+        
+    </div>
+</body>
+
+
+<script src="socket.io/socket.io.js"></script>
+<script>
+    function hideLoginFrame() {
+        var name = document.getElementById('user-name');
+        if (name.value.length < 2 || name.value.length > 25) {
+            alert('Invalid name');
+            return;
+        }
+        var frame = document.querySelector('#login');
+        frame.style.display = 'none';
+        document.querySelector('.chat-frame').style.display = 'block';
+        var username = name.value;
+        socket.emit('on-connect',{username});
+    }
+
+
+    //socket
+    const chatMess = document.querySelector('#chat-txt');
+    const chatForm = document.querySelector('#chat-form');
+    const userName = document.querySelector('#user-name')
+    socket = io();
+
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = chatMess.value;
+        const name = userName.value;
+        if (message.length <= 0) {
+            return;
+        }
+        socket.emit('on-chat', {
+            name, message
+        })
+        chatMess.value = '';
+        chatMess.scrollIntoView();
+    })
+
+    const chatFrame = document.querySelector('#messages');
+    socket.on('user-chat', (data) => {
+        var d = new Date();
+        var h = d.getHours();
+        var m = d.getMinutes();
+        const ChatItem = document.createElement('ul');
+        
+        ChatItem.textContent = '['+h+':'+m  +  '] ' + data.message;
+        const user = document.createElement('div');
+        user.textContent = data.name;
+        chatFrame.append(user);
+        chatFrame.appendChild(ChatItem);
+        chatMess.scrollIntoView();
+       
+    })
+    socket.on('user-connect',(data)=>{
+        const connect = document.createElement('ul');
+        connect.textContent = data.username +' connected!';
+        chatFrame.append(connect);
+        chatMess.scrollIntoView();
+    })
+</script>
+
+</html>

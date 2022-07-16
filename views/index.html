@@ -10,13 +10,19 @@
     <title>Document</title>
 </head>
 
-<body>
+<body onload="onload()">
+    <div class="header">
+        <form id="game" method="Get" action="/Game">
+        <div></div>
+        </form>
+        <button class="btn" onclick="btnGame()">Game</button>
+    </div>
     <h1>Chat Room</h1>
 
     <div id="login">
         <p>Your name</p>
         <input class="input-text" type="text" id="user-name">
-        <button class="btn" onclick="hideLoginFrame()">Ok</button>
+        <button class="btn" onclick="hideLoginFrame(true)">Ok</button>
     </div>
     <div class="chat-frame" style="display: none;">
 
@@ -33,30 +39,50 @@
 
 <script src="socket.io/socket.io.js"></script>
 <script>
-    function hideLoginFrame() {
-        var name = document.getElementById('user-name');
-        if (name.value.length < 2 || name.value.length > 25) {
+   
+    function onload(){
+        if(!document.cookie==""){
+            hideLoginFrame(false);
+        }
+    }
+
+    function hideLoginFrame(isNeedCheck) {
+        var name;
+        if(isNeedCheck==true){
+             name = document.getElementById('user-name');
+            if (name.value.length < 2 || name.value.length > 25) {
             alert('Invalid name');
             return;
+            }
+        }else{
+            document.getElementById('user-name').innerHTML=document.cookie;
+            name=document.cookie;
         }
+        
         var frame = document.querySelector('#login');
         frame.style.display = 'none';
         document.querySelector('.chat-frame').style.display = 'block';
         var username = name.value;
+        if(!document.cookie==""){
+            username=document.cookie;
+        }else{
+            document.cookie = username;
+        }
         socket.emit('on-connect',{username});
+      
     }
 
 
     //socket
     const chatMess = document.querySelector('#chat-txt');
     const chatForm = document.querySelector('#chat-form');
-    const userName = document.querySelector('#user-name')
+    const userName = document.querySelector('#user-name');
     socket = io();
 
     chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const message = chatMess.value;
-        const name = userName.value;
+        const name = document.cookie;
         if (message.length <= 0) {
             return;
         }
@@ -66,6 +92,14 @@
         chatMess.value = '';
         chatMess.scrollIntoView();
     })
+    function btnGame(){
+        const name = document.cookie;
+        const message = name+" Play Simple Slot Machine...";
+        socket.emit('on-chat', {
+            name, message
+        })
+        document.getElementById('game').submit();
+    }
 
     const chatFrame = document.querySelector('#messages');
     socket.on('user-chat', (data) => {
@@ -91,3 +125,6 @@
 </script>
 
 </html>
+
+
+

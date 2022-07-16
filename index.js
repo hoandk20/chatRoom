@@ -17,7 +17,14 @@ io.on('connection', (socket) => {
         io.emit('user-connect', data);
     })
 })
+//use folder public
 app.use(express.static(path.join(__dirname, 'public')));
 app.get("/", function (req, res) {
     res.sendFile(__dirname+'/views/index.html');
 })
+//do get game
+app.get("/Game", function (req, res) {
+    res.sendFile(__dirname+'/views/slotmachine.html');
+})
+
+

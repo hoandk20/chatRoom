@@ -5,6 +5,13 @@ h1{
 body{
     background-image: url(background.png);
 }
+.header{
+    float: right;
+}
+.header .btn{
+    margin-right: 50px;
+    width: 90px;
+}
 #login{
     width: 300px;
     height: 150px;
